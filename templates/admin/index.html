@@ -3,9 +3,11 @@
 
 <style>
 
+/* ===== LEVEL 3 PRO ADMIN HOME ===== */
+
 .dashboard-grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
 gap:22px;
 margin-bottom:35px;
 }
@@ -14,7 +16,7 @@ margin-bottom:35px;
 padding:22px;
 border-radius:18px;
 color:white;
-box-shadow:0 15px 35px rgba(0,0,0,.15);
+box-shadow:0 15px 35px rgba(0,0,0,.18);
 transition:.3s;
 }
 
@@ -33,18 +35,16 @@ font-weight:800;
 }
 
 .analytics-box{
-background:white;
+background:#ffffff;
 padding:25px;
 border-radius:18px;
-box-shadow:0 10px 25px rgba(0,0,0,.08);
+box-shadow:0 12px 30px rgba(0,0,0,.12);
 margin-bottom:30px;
 }
 
 </style>
 
 <h1>📊 Admin Dashboard</h1>
-
-<!-- ===== STATS ===== -->
 
 <div class="dashboard-grid">
 
@@ -70,8 +70,6 @@ Revenue
 
 </div>
 
-<!-- ===== CHARTS ===== -->
-
 <div class="analytics-box">
 <h3>📈 Sales Trend</h3>
 <canvas id="salesChart" height="120"></canvas>
@@ -82,12 +80,8 @@ Revenue
 <canvas id="ordersChart" height="120"></canvas>
 </div>
 
-<!-- ===== JSON DATA ===== -->
-
 {{ sales_data|json_script:"sales-data" }}
 {{ orders_data|json_script:"orders-data" }}
-
-<!-- ===== INSIGHT ===== -->
 
 <div class="analytics-box">
 <h3>🤖 AI Insight</h3>
@@ -98,52 +92,32 @@ Revenue
 {% endif %}
 </div>
 
-<!-- ===== CHART JS ===== -->
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
 
 const salesData = JSON.parse(
-    document.getElementById("sales-data").textContent
+document.getElementById("sales-data").textContent
 );
 
 const ordersData = JSON.parse(
-    document.getElementById("orders-data").textContent
+document.getElementById("orders-data").textContent
 );
 
-// ---- SALES LINE GRAPH ----
-
 new Chart(document.getElementById("salesChart"), {
-    type: "line",
-    data: {
-        labels: salesData.map(d => d.day),
-        datasets: [{
-            label: "Sales ₹",
-            data: salesData.map(d => d.total),
-            borderWidth: 3,
-            tension: 0.4
-        }]
-    },
-    options: {
-        responsive: true
-    }
+type:"line",
+data:{
+labels:salesData.map(d=>d.day),
+datasets:[{label:"Sales ₹",data:salesData.map(d=>d.total),borderWidth:3,tension:.4}]
+}
 });
 
-// ---- ORDERS BAR GRAPH ----
-
 new Chart(document.getElementById("ordersChart"), {
-    type: "bar",
-    data: {
-        labels: ordersData.map(d => d.day),
-        datasets: [{
-            label: "Orders",
-            data: ordersData.map(d => d.count)
-        }]
-    },
-    options: {
-        responsive: true
-    }
+type:"bar",
+data:{
+labels:ordersData.map(d=>d.day),
+datasets:[{label:"Orders",data:ordersData.map(d=>d.count)}]
+}
 });
 
 </script>

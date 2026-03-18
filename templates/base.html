@@ -2,478 +2,200 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Mini Amazon</title>
+<title>NEXUS MART</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 
-/* ================= THEME ================= */
-
-body{
-  --bg:#f8fafc;
-  --text:#0f172a;
-  --card:#ffffff;
-  --nav:#0f172a;
-  --navtext:#ffffff;
-  --border:#e5e7eb;
-  --accent:#ffb703;
+/* ================= LEVEL 3 ROOT ================= */
+:root{
+ --radius:18px;
 }
 
+/* ================= LIGHT MODE ================= */
+body{
+ --bg:#f5f7ff;
+ --text:#0f172a;
+ --card:#ffffff;
+ --nav:#0f172a;
+ --navtext:#ffffff;
+ --border:#e5e7eb;
+ --accent:#ffb703;
+
+ background:linear-gradient(135deg,#eef2ff,#f8fafc);
+ color:var(--text);
+ font-family:'Inter',sans-serif;
+ padding-bottom:90px;
+}
+
+/* ================= LEVEL 3 DARK MODE ================= */
 body.dark{
-  --bg:#0b1220;
-  --text:#f1f5f9;
-  --card:#1e293b;
-  --nav:#020617;
-  --navtext:#f1f5f9;
-  --border:#334155;
-  --accent:#fbbf24;
-}
+ --bg:#0f172a;
+ --text:#f1f5f9;
+ --card:#1e293b;
+ --nav:#020617;
+ --navtext:#f8fafc;
+ --border:#334155;
+ --accent:#fbbf24;
 
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:system-ui, sans-serif;
-  padding-bottom:70px;
-  transition:.3s;
+ background:
+ radial-gradient(circle at 20% 0%, #1e293b 0%, transparent 40%),
+ radial-gradient(circle at 80% 0%, #0f172a 0%, transparent 40%),
+ #020617;
 }
 
 /* ================= NAVBAR ================= */
-
 .navbar{
-  background:var(--nav);
-  padding:14px;
+ background:var(--nav);
+ backdrop-filter:blur(14px);
+ padding:14px;
+ position:relative;      /* FIX */
+ z-index:4000;           /* FIX */
 }
 
 .brand{
-  font-size:1.8rem;
-  font-weight:800;
-  color:var(--accent);
-  text-decoration:none;
+ font-size:2rem;
+ font-weight:900;
+ color:var(--accent);
+ text-decoration:none;
 }
 
 .nav-item-link{
-  color:var(--navtext);
-  font-weight:600;
-  margin-left:18px;
-  text-decoration:none;
+ color:var(--navtext);
+ font-weight:600;
+ margin-left:18px;
+ text-decoration:none;
 }
 
-.nav-item-link:hover{
-  color:var(--accent);
-}
-
+/* ================= SEARCH ================= */
 .search-box{
-  border-radius:30px;
-  padding:10px 16px;
-  background:var(--card);
-  color:var(--text);
-  border:1px solid var(--border);
+ border-radius:40px;
+ padding:12px 20px;
+ background:var(--card);
+ border:1px solid var(--border);
+ color:var(--text) !important;
+}
+
+.search-box::placeholder{
+ color:#94a3b8 !important;
+}
+
+body.dark .search-box{
+ background:#1e293b;
+}
+
+/* ⭐⭐⭐ AUTOCOMPLETE FIX ⭐⭐⭐ */
+#autocomplete-results{
+ position:absolute;
+ top:105%;
+ left:0;
+ right:0;
+ background:var(--card);
+ border:1px solid var(--border);
+ border-radius:12px;
+ box-shadow:0 12px 30px rgba(0,0,0,.2);
+ display:none;
+ z-index:6000;
+ max-height:320px;
+ overflow-y:auto;
+}
+
+/* ================= CARD FIX ================= */
+.card,
+.product-card{
+ background:var(--card) !important;
+ border-radius:16px;
+ border:1px solid var(--border);
+ transition:.25s;
+}
+
+.card:hover{
+ transform:translateY(-4px);
+}
+
+.card a,
+.card h6,
+.card p{
+ color:var(--text) !important;
+}
+
+/* ================= PRICE FIX ================= */
+.price{
+ color:#16a34a !important;
+ font-weight:700;
+ font-size:1.25rem;
+}
+
+body.dark .price{
+ color:#22c55e !important;
 }
 
 /* ================= DROPDOWN ================= */
-
 .dropdown-menu{
-  border-radius:16px;
-  box-shadow:0 10px 30px rgba(0,0,0,.15);
-  background:var(--card);
-  color:var(--text);
-}
-
-/* ================= CATEGORY BAR ================= */
-
-.category-bar{
-  background:var(--card);
-  padding:10px 0;
-  box-shadow:0 3px 12px rgba(0,0,0,.06);
-  overflow-x:auto;
-  white-space:nowrap;
-}
-
-.category-bar a{
-  display:inline-block;
-  margin:0 10px;
-  padding:8px 16px;
-  border-radius:20px;
-  background:#f1f5f9;
-  text-decoration:none;
-  font-weight:600;
-  color:var(--text);
-}
-
-body.dark .category-bar a{
-  background:#334155;
-}
-
-.category-bar a.active,
-.category-bar a:hover{
-  background:var(--accent);
-  color:black;
-}
-
-/* ================= PRODUCT CARD ================= */
-
-.product-card{
-  border-radius:20px;
-  background:var(--card);
-  box-shadow:0 8px 25px rgba(0,0,0,.08);
-  transition:.3s;
-  color:var(--text);
-}
-
-.product-card:hover{
-  transform:translateY(-6px);
-}
-
-.price{
-  color:#16a34a;
-  font-size:1.3rem;
-  font-weight:700;
+ background:var(--card);
+ border:1px solid var(--border);
 }
 
 /* ================= BOTTOM BAR ================= */
-
 .bottom-bar{
-  position:fixed;
-  bottom:0;
-  left:0;
-  width:100%;
-  background:var(--card);
-  box-shadow:0 -4px 15px rgba(0,0,0,.12);
-  display:flex;
-  justify-content:space-around;
-  padding:12px 0;
-  z-index:3000;
+ position:fixed;
+ bottom:12px;
+ left:50%;
+ transform:translateX(-50%);
+ width:92%;
+ background:var(--card);
+ border-radius:30px;
+ box-shadow:0 15px 40px rgba(0,0,0,.3);
+ display:flex;
+ justify-content:space-around;
+ padding:14px 0;
+ z-index:3000;
 }
 
 .bottom-bar a{
-  text-decoration:none;
-  font-weight:700;
-  color:var(--text);
+ color:var(--text);
+ font-weight:700;
+ text-decoration:none;
 }
 
-.bottom-bar a:hover{
-  color:var(--accent);
-}
-
-/* ================= DARK MODE FIX (FULL) ================= */
-
-body.dark{
-  color: var(--text);
-}
-
-/* Force all text visible */
-
-body.dark *{
-  color: var(--text) !important;
-}
-
-/* Fix Bootstrap components */
-
-body.dark .card,
-body.dark .list-group-item,
-body.dark .dropdown-menu,
-body.dark .alert,
-body.dark .modal-content{
-  background: var(--card) !important;
-  border-color: var(--border) !important;
-}
-
-/* Inputs & selects */
-
-body.dark input,
-body.dark textarea,
-body.dark select{
-  background: var(--card) !important;
-  color: var(--text) !important;
-  border:1px solid var(--border) !important;
-}
-
-/* Placeholder text */
-
-body.dark input::placeholder{
-  color:#94a3b8 !important;
-}
-
-/* Buttons */
-
-body.dark .btn{
-  color: var(--text) !important;
-}
-
-/* Category bar buttons */
-
-body.dark .category-bar a{
-  color: var(--text) !important;
-}
-
-/* Autocomplete box */
-
-body.dark #autocomplete-results div{
-  color: var(--text) !important;
-}
-
-body.dark #autocomplete-results div:hover{
-  background:#334155;
-}
-
-/* Prices keep green */
-
-body.dark .price{
-  color:#22c55e !important;
-}
-
-/* Muted text */
-
-body.dark .text-muted{
-  color:#94a3b8 !important;
-}
-
-/* ================= MOBILE ================= */
-
-@media(max-width:768px){
-  .navbar-content{
-    flex-direction:column;
-    gap:10px;
-  }
-  .nav-right{
-    width:100%;
-    justify-content:space-between;
-  }
-  .search-box{
-    width:100%;
-  }
-}
-
-</style>
-</head>
-
-<body>
-
-<!-- ================= NAVBAR ================= -->
-
-<nav class="navbar">
-
-<div class="container d-flex align-items-center navbar-content">
-
-<a href="/" class="brand">MiniAmazon</a>
-
-<form method="get" action="/search/results/" 
-      class="flex-grow-1 mx-3 position-relative">
-
-<input 
-id="search-box"
-name="q"
-class="form-control search-box"
-placeholder="Search products..."
-autocomplete="off">
-
-<div id="autocomplete-results"
-style="position:absolute;top:100%;left:0;right:0;
-background:var(--card);
-border:1px solid var(--border);
-display:none;
-z-index:9999;">
-</div>
-
-</form>
-
-<div class="d-flex align-items-center nav-right">
-
-<!-- 🌙 DARK MODE BUTTON -->
-<button onclick="toggleTheme()" 
-style="border:none;background:var(--accent);border-radius:50%;
-padding:6px 10px;margin-right:10px;">
-🌙
-</button>
-
-<a href="/orders/my-orders/" class="nav-item-link">My Orders</a>
-
-{% if user.is_authenticated %}
-<div class="dropdown">
-
-<a class="nav-item-link dropdown-toggle" data-bs-toggle="dropdown" href="#">
-My Profile
-</a>
-
-<ul class="dropdown-menu dropdown-menu-end">
-
-<li><a class="dropdown-item" href="/profile/">My Profile</a></li>
-<li><hr></li>
-<li><a class="dropdown-item text-danger" href="/logout/">Logout</a></li>
-
-</ul>
-
-</div>
-{% else %}
-<a href="/login/" class="nav-item-link">Login</a>
-<a href="/register/" class="nav-item-link">Register</a>
-{% endif %}
-
-</div>
-
-</div>
-</nav>
-
-<!-- ================= CATEGORY BAR ================= -->
-
-{% if categories %}
-<div class="category-bar">
-<div class="container">
-
-<a href="/" class="{% if not request.GET.category %}active{% endif %}">All</a>
-
-{% for cat in categories %}
-<a href="?category={{cat.id}}" 
-class="{% if request.GET.category == cat.id|stringformat:'s' %}active{% endif %}">
-{{ cat.name }}
-</a>
-{% endfor %}
-
-</div>
-</div>
-{% endif %}
-
-<!-- ================= CONTENT ================= -->
-
-<div class="container mt-4">
-
-{% if messages %}
-{% for message in messages %}
-
-<div class="alert 
-{% if message.tags == 'error' %}alert-danger
-{% elif message.tags == 'success' %}alert-success
-{% else %}alert-info{% endif %}
-alert-dismissible fade show">
-
-{{ message }}
-
-<button class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-
-{% endfor %}
-{% endif %}
-{% block content %}{% endblock %}
-
-
-</div>
-
-<!-- ================= BOTTOM BAR ================= -->
-
-{% if user.is_authenticated %}
-<div class="bottom-bar">
-<a href="/wishlist/">❤️ Wishlist</a>
-<a href="/orders/cart/">🛒 Cart ({{ cart_count }})</a>
-</div>
-{% endif %}
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- ================= AUTOSUGGEST ================= -->
-
-<script>
-
-const input = document.getElementById("search-box");
-const box = document.getElementById("autocomplete-results");
-
-if(input){
-
-input.onkeyup = function(){
-
-let q = input.value;
-
-if(q.length === 0){
-  box.style.display="none";
-  box.innerHTML="";
-  return;
-}
-
-fetch("/search/autocomplete/?q="+q)
-.then(res=>res.json())
-.then(data=>{
-
-  box.innerHTML="";
-
-  if(data.length===0){
-    box.style.display="none";
-    return;
-  }
-
-  box.style.display="block";
-
-  data.forEach(p=>{
-    box.innerHTML+=`
-      <div style="padding:8px;cursor:pointer"
-      onclick="window.location='/product/${p.id}/'">
-      ${p.name}
-      </div>
-    `;
-  })
-
-});
-}
-}
-
-</script>
-
-<!-- ================= DARK MODE ================= -->
-
-<script>
-
-function toggleTheme(){
-  if(document.body.classList.contains("dark")){
-    document.body.classList.remove("dark");
-    localStorage.setItem("theme","light");
-  }else{
-    document.body.classList.add("dark");
-    localStorage.setItem("theme","dark");
-  }
-}
-
-if(localStorage.getItem("theme")==="dark"){
-  document.body.classList.add("dark");
-}
-
-</script>
-<!-- ================= AI CHATBOT ================= -->
-
-<style>
+/* ================= CHATBOT ================= */
 #chatbot-btn{
 position:fixed;
-bottom:90px;
+bottom:110px;
 right:20px;
-background:#ffb703;
+background:var(--accent);
 border:none;
 border-radius:50%;
 width:60px;
 height:60px;
 font-size:26px;
 cursor:pointer;
-box-shadow:0 10px 25px rgba(0,0,0,.3);
-z-index:4000;
+box-shadow:0 10px 25px rgba(0,0,0,.35);
+z-index:5000;
 }
 
 #chatbot-box{
 position:fixed;
-bottom:160px;
+bottom:180px;
 right:20px;
 width:320px;
-max-height:420px;
-background:white;
+height:420px;
+background:var(--card);
 border-radius:18px;
-box-shadow:0 15px 35px rgba(0,0,0,.25);
+box-shadow:0 20px 55px rgba(0,0,0,.45);
 display:none;
 flex-direction:column;
 overflow:hidden;
-z-index:4000;
+z-index:5000;
 }
 
 #chatbot-header{
-background:#0f172a;
-color:white;
+background:var(--nav);
+color:#fff;
 padding:12px;
 font-weight:700;
 text-align:center;
@@ -487,14 +209,21 @@ font-size:14px;
 }
 
 .bot{
-background:#f1f5f9;
+background:#ffffff;
+color:#0f172a;
 padding:8px 12px;
 border-radius:12px;
 margin-bottom:8px;
 }
 
+body.dark .bot{
+background:#1e293b;
+color:#f1f5f9;
+}
+
 .user{
-background:#ffb703;
+background:var(--accent);
+color:#000;
 padding:8px 12px;
 border-radius:12px;
 margin-bottom:8px;
@@ -503,7 +232,7 @@ text-align:right;
 
 #chatbot-input{
 display:flex;
-border-top:1px solid #ddd;
+border-top:1px solid var(--border);
 }
 
 #chatbot-input input{
@@ -511,91 +240,180 @@ flex:1;
 border:none;
 padding:10px;
 outline:none;
+background:transparent;
+color:var(--text);
 }
 
 #chatbot-input button{
 border:none;
-background:#0f172a;
-color:white;
+background:var(--accent);
+color:#000;
 padding:10px 14px;
 cursor:pointer;
 }
+
+/* DARK FIX */
+body.dark .text-muted{
+ color:#94a3b8 !important;
+}
+
 </style>
+</head>
+<body>
+
+{% csrf_token %}
+<input type="hidden" id="csrf-token" value="{{ csrf_token }}">
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar">
+<div class="container d-flex align-items-center navbar-content">
+
+<a href="/" class="brand">NEXUS MART</a>
+
+<form method="get" action="/search/results/" 
+class="flex-grow-1 mx-3 position-relative" style="z-index:6000;">
+<input id="search-box" name="q" class="form-control search-box"
+placeholder="Search products..." autocomplete="off">
+
+<div id="autocomplete-results"></div>
+</form>
+
+<div class="d-flex align-items-center nav-right">
+
+<button onclick="toggleTheme()"
+style="border:none;background:var(--accent);border-radius:50%;
+padding:6px 10px;margin-right:10px;">🌙</button>
+
+<a href="/orders/my-orders/" class="nav-item-link">My Orders</a>
+
+{% if user.is_authenticated %}
+<div class="dropdown">
+<a class="nav-item-link dropdown-toggle" data-bs-toggle="dropdown" href="#">
+My Profile
+</a>
+<ul class="dropdown-menu dropdown-menu-end">
+<li><a class="dropdown-item" href="/profile/">My Profile</a></li>
+<li><hr></li>
+<li><a class="dropdown-item text-danger" href="/logout/">Logout</a></li>
+</ul>
+</div>
+{% else %}
+<a href="/login/" class="nav-item-link">Login</a>
+<a href="/register/" class="nav-item-link">Register</a>
+{% endif %}
+
+</div>
+</div>
+</nav>
+
+<div class="container mt-4">
+{% if messages %}
+{% for message in messages %}
+<div class="alert 
+{% if message.tags == 'error' %}alert-danger
+{% elif message.tags == 'success' %}alert-success
+{% else %}alert-info{% endif %}
+alert-dismissible fade show">
+{{ message }}
+<button class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+{% endfor %}
+{% endif %}
+{% block content %}{% endblock %}
+</div>
+
+{% if user.is_authenticated %}
+<div class="bottom-bar">
+<a href="/wishlist/">❤️ Wishlist</a>
+<a href="/orders/cart/">🛒 Cart ({{ cart_count }})</a>
+</div>
+{% endif %}
 
 <button id="chatbot-btn">🤖</button>
 
 <div id="chatbot-box">
-
-<div id="chatbot-header">
-MiniAmazon AI Assistant
-</div>
-
+<div id="chatbot-header">MiniAmazon AI Assistant</div>
 <div id="chatbot-messages">
 <div class="bot">👋 Hi! Ask me about products, orders, sales or help.</div>
 </div>
-
 <div id="chatbot-input">
 <input id="chatbot-text" placeholder="Type your message...">
 <button onclick="sendMessage()">➤</button>
 </div>
-
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
+const input=document.getElementById("search-box");
+const box=document.getElementById("autocomplete-results");
 
-const chatBtn = document.getElementById("chatbot-btn");
-const chatBox = document.getElementById("chatbot-box");
-const chatMessages = document.getElementById("chatbot-messages");
-const chatInput = document.getElementById("chatbot-text");
-
-chatBtn.onclick = () => {
-  chatBox.style.display = chatBox.style.display === "flex" ? "none" : "flex";
-  chatBox.style.flexDirection = "column";
-};
-
-
-function addMessage(text, cls){
-  const div = document.createElement("div");
-  div.className = cls;
-  div.innerHTML = text.replace(/\n/g,"<br>");
-  chatMessages.appendChild(div);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-
+if(input){
+input.onkeyup=function(){
+let q=input.value;
+if(q.length===0){box.style.display="none";box.innerHTML="";return;}
+fetch("/search/autocomplete/?q="+q)
+.then(res=>res.json())
+.then(data=>{
+box.innerHTML="";
+if(data.length===0){box.style.display="none";return;}
+box.style.display="block";
+data.forEach(p=>{
+box.innerHTML+=`<div style="padding:10px;cursor:pointer;border-bottom:1px solid var(--border)"
+onclick="window.location='/product/${p.id}/'">${p.name}</div>`;
+});
+});
+}
 }
 
-function getCSRFToken(){
-  return document.cookie
-    .split("; ")
-    .find(row => row.startsWith("csrftoken="))
-    ?.split("=")[1];
+function toggleTheme(){
+if(document.body.classList.contains("dark")){
+document.body.classList.remove("dark");
+localStorage.setItem("theme","light");
+}else{
+document.body.classList.add("dark");
+localStorage.setItem("theme","dark");
+}}
+if(localStorage.getItem("theme")==="dark"){
+document.body.classList.add("dark");
+}
+
+const chatBtn=document.getElementById("chatbot-btn");
+const chatBox=document.getElementById("chatbot-box");
+const chatMessages=document.getElementById("chatbot-messages");
+const chatInput=document.getElementById("chatbot-text");
+const csrftoken=document.getElementById("csrf-token").value;
+
+chatBtn.onclick=()=>{
+chatBox.style.display=chatBox.style.display==="flex"?"none":"flex";
+chatBox.style.flexDirection="column";
+};
+
+function addMessage(text,cls){
+const div=document.createElement("div");
+div.className=cls;
+div.innerHTML=text.replace(/\n/g,"<br>");
+chatMessages.appendChild(div);
+chatMessages.scrollTop=chatMessages.scrollHeight;
 }
 
 function sendMessage(){
-
-  const msg = chatInput.value.trim();
-  if(!msg) return;
-
-  addMessage(msg,"user");
-  chatInput.value = "";
-
-  fetch("/chatbot/send/", {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": getCSRFToken()
-      },
-      body: JSON.stringify({ message: msg })
-  })
-  .then(res => res.json())
-  .then(data => {
-      addMessage(data.reply,"bot");
-  })
-  .catch(() => {
-      addMessage("⚠️ Server error","bot");
-  });
+const msg=chatInput.value.trim();
+if(!msg) return;
+addMessage(msg,"user");
+chatInput.value="";
+fetch("/chatbot/send/",{
+method:"POST",
+headers:{
+"Content-Type":"application/json",
+"X-CSRFToken":csrftoken
+},
+body:JSON.stringify({message:msg})
+})
+.then(res=>res.json())
+.then(data=>addMessage(data.reply,"bot"))
+.catch(()=>addMessage("⚠️ Server error","bot"));
 }
-
-
 </script>
 
 </body>

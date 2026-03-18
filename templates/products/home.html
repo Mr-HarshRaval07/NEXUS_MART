@@ -8,14 +8,15 @@
 
 <h5 class="mb-3 fw-bold">Categories</h5>
 
-<ul class="list-group">
+<ul class="list-group pro-sidebar">
+
 
 {% for cat in categories %}
-<li class="list-group-item p-2 
+<li class="list-group-item p-2 border-0
 {% if request.GET.category == cat.id|stringformat:'s' %}active{% endif %}">
 
 <a href="?category={{ cat.id }}"
-class="text-decoration-none d-block fw-semibold
+class="text-decoration-none fw-semibold
 {% if request.GET.category == cat.id|stringformat:'s' %}
 text-white
 {% else %}
@@ -37,7 +38,7 @@ text-dark
 
 <!-- ================= FILTER BAR ================= -->
 
-<form method="get" class="mb-4 d-flex flex-wrap align-items-center gap-2">
+<form method="get" class="pro-filter mb-4 d-flex flex-wrap align-items-center gap-2">
 
 <input type="hidden" name="q" value="{{ request.GET.q|default:'' }}">
 <input type="hidden" name="category" value="{{ request.GET.category|default:'' }}">
@@ -56,18 +57,12 @@ value="{{ request.GET.min_price|default:'' }}">
 class="form-control" style="width:140px;"
 value="{{ request.GET.max_price|default:'' }}">
 
-<!-- APPLY + RESET SIDE BY SIDE -->
-
 <div class="d-flex gap-2">
-
-<button class="btn btn-primary px-4">
-Apply
-</button>
+<button class="btn btn-primary px-4">Apply</button>
 
 <a href="/" class="btn btn-outline-secondary px-4">
 Reset
 </a>
-
 </div>
 
 </form>
@@ -83,12 +78,18 @@ Reset
 {% for item in recent_products %}
 <div class="col-lg-3 col-md-4 col-sm-6 col-6">
 
-<div class="card product-card shadow-sm p-3 h-100 text-center">
+<div class="card product-card glass hover-card shadow-sm p-3 h-100 text-center">
 
 {% if item.product.images.first %}
 <img src="{{ item.product.images.first.image.url }}"
-class="img-fluid rounded mb-2"
-style="height:130px;object-fit:contain;">
+style="height:130px;object-fit:contain;" class="img-hover">
+
+{% elif item.product.image_url %}
+<img src="{{ item.product.image_url }}"
+style="height:130px;object-fit:contain;" class="img-hover">
+
+{% else %}
+<img src="https://via.placeholder.com/130">
 {% endif %}
 
 <h6 class="text-truncate mb-1">
@@ -119,12 +120,21 @@ class="text-decoration-none text-dark fw-semibold">
 {% for product in popular_products %}
 <div class="col-lg-3 col-md-4 col-sm-6 col-6">
 
-<div class="card product-card shadow-sm p-3 h-100 text-center">
+<div class="card product-card glass hover-card shadow-sm p-3 h-100 text-center">
 
 {% if product.images.first %}
 <img src="{{ product.images.first.image.url }}"
-class="img-fluid rounded mb-2"
-style="height:130px;object-fit:contain;">
+class="img-fluid rounded mb-2 img-hover"
+style="height:180px;object-fit:contain;">
+
+{% elif product.image_url %}
+<img src="{{ product.image_url }}"
+class="img-fluid rounded mb-2 img-hover"
+style="height:180px;object-fit:contain;">
+
+{% else %}
+<img src="https://via.placeholder.com/180?text=No+Image"
+class="img-fluid rounded mb-2">
 {% endif %}
 
 <h6 class="text-truncate mb-1">
@@ -155,12 +165,18 @@ class="text-decoration-none text-dark fw-semibold">
 {% for product in products %}
 <div class="col-lg-3 col-md-4 col-sm-6 col-12">
 
-<div class="card product-card shadow-sm h-100 text-center p-3">
+<div class="card product-card glass hover-card shadow-sm h-100 text-center p-3">
 
 {% if product.images.first %}
 <img src="{{ product.images.first.image.url }}"
-class="img-fluid rounded mb-2"
+class="img-fluid rounded mb-2 img-hover"
 style="height:180px;object-fit:contain;">
+
+{% elif product.image_url %}
+<img src="{{ product.image_url }}"
+class="img-fluid rounded mb-2 img-hover"
+style="height:180px;object-fit:contain;">
+
 {% else %}
 <img src="https://via.placeholder.com/180?text=No+Image"
 class="img-fluid rounded mb-2">

@@ -2,33 +2,68 @@
 {% block content %}
 
 <style>
+
+/* ================= LEVEL 3 DETAIL PAGE ================= */
+
 .product-main-img{
-    max-height:400px;
+    max-height:420px;
     object-fit:contain;
     cursor:zoom-in;
+    transition:.35s ease;
+}
+.product-main-img:hover{
+    transform:scale(1.03);
 }
 
 .carousel-control-custom{
-    width:45px;
-    height:45px;
-    background:black;
+    width:48px;
+    height:48px;
+    background:rgba(0,0,0,.7);
     border-radius:50%;
     top:50%;
     transform:translateY(-50%);
-    opacity:.8;
-}
-.carousel-control-custom:hover{
-    background:#333;
-    opacity:1;
 }
 
 .zoom-img{
-    transition: transform .3s ease;
+    transition: transform .35s ease;
     cursor:zoom-in;
 }
+
+/* ⭐ Pro review cards */
+
+.review-box{
+    border-radius:18px;
+    background:var(--card);
+    backdrop-filter:blur(18px);
+    box-shadow:0 15px 35px rgba(0,0,0,.12);
+    border:none;
+}
+
+/* ⭐ Specifications table */
+
+.table{
+    background:var(--card);
+    backdrop-filter:blur(12px);
+    border-radius:14px;
+    overflow:hidden;
+}
+
+/* ⭐ Similar product cards */
+
+.similar-card{
+    border-radius:20px;
+    background:var(--card);
+    box-shadow:0 18px 45px rgba(0,0,0,.15);
+    transition:.35s;
+}
+.similar-card:hover{
+    transform:translateY(-8px);
+}
+
 </style>
 
-<div class="row mb-4">
+<div class="row pro-section glass">
+
 
 <!-- ================= IMAGES ================= -->
 
@@ -40,18 +75,19 @@
 
 {% if product.images.exists %}
   {% for img in product.images.all %}
-  <div class="carousel-item {% if forloop.first %}active{% endif %}">
-    <div class="zoom-trigger">
-      <img src="{{ img.image.url }}" 
-           class="d-block w-100 border rounded product-main-img">
+    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+      <div class="zoom-trigger text-center">
+        <img src="{{ img.image.url }}"
+             class="d-block w-100 rounded product-main-img">
+      </div>
     </div>
-  </div>
   {% endfor %}
+
+{% elif product.image_url %}
+<img src="{{ product.image_url }}"
+class="d-block w-100 rounded product-main-img">
 {% else %}
-  <div class="carousel-item active">
-    <img src="https://via.placeholder.com/400?text=No+Image"
-         class="d-block w-100 border rounded product-main-img">
-  </div>
+<img src="https://via.placeholder.com/400">
 {% endif %}
 
 </div>
@@ -77,9 +113,8 @@
 
 <div class="col-md-6">
 
-<h3>{{ product.name }}</h3>
+<h3 class="fw-bold">{{ product.name }}</h3>
 
-<!-- ⭐ Rating -->
 <div class="mb-2">
 
 <strong>{{ avg_rating }}/5</strong>
@@ -96,13 +131,13 @@
 
 </div>
 
-<p class="fs-4 fw-bold text-success">₹{{ product.price }}</p>
+<p class="fs-3 fw-bold price">₹{{ product.price }}</p>
 
-<p>{{ product.description }}</p>
+<p class="text-muted">{{ product.description }}</p>
 
 <div class="d-flex gap-2 mt-3">
 
-<a href="/orders/add/{{ product.id }}/" class="btn btn-primary">
+<a href="/orders/add/{{ product.id }}/" class="btn btn-primary px-4">
 Add to Cart
 </a>
 
@@ -127,9 +162,9 @@ Add to Cart
 
 {% if product.specifications %}
 
-<h5>Specifications</h5>
+<h5 class="mt-4 fw-bold">Specifications</h5>
 
-<table class="table table-bordered w-75">
+<table class="table table-bordered w-75 glass">
 
 {% for key, value in product.specifications.items %}
 <tr>
@@ -147,14 +182,13 @@ Add to Cart
 
 <!-- ================= REVIEWS ================= -->
 
-<h4 class="mt-4">Customer Reviews</h4>
+<h4 class="mt-4 fw-bold">Customer Reviews</h4>
 
 {% if reviews.exists %}
 
 {% for r in reviews %}
 
-<div class="border p-3 mb-3 review-box shadow-sm">
-
+<div class="p-3 mb-3 review-box hover-card">
 
 <strong>{{ r.user.username }}</strong>
 
@@ -186,7 +220,7 @@ Add to Cart
 
 <h5>Add Your Review</h5>
 
-<form method="POST" action="{% url 'add_review' product.id %}" class="w-50">
+<form method="POST" action="{% url 'add_review' product.id %}" class="w-50 glass p-3">
 
 {% csrf_token %}
 
@@ -216,14 +250,14 @@ placeholder="Share your experience..." required></textarea>
 
 <!-- ================= SIMILAR ================= -->
 
-<h4>Similar Products</h4>
+<h4 class="mt-5 fw-bold">Similar Products</h4>
 
 <div class="row">
 
 {% for p in recommendations %}
 <div class="col-md-3 mb-3">
 
-<div class="card p-2 text-center shadow-sm h-100">
+<div class="card similar-card p-2 text-center h-100">
 
 {% if p.images.first %}
 <img src="{{ p.images.first.image.url }}"
@@ -241,7 +275,7 @@ placeholder="Share your experience..." required></textarea>
 
 </a>
 
-<p class="fw-semibold mt-2">₹{{ p.price }}</p>
+<p class="fw-semibold mt-2 price">₹{{ p.price }}</p>
 
 </div>
 

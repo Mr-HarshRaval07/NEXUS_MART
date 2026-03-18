@@ -1,30 +1,48 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2 class="mb-4">My Orders</h2>
+<h2 class="fw-bold mb-4">My Orders</h2>
 
 {% for order in orders %}
 
-<div class="card mb-4 p-3 shadow-sm">
+<div class="card glass hover-card mb-4 p-4">
 
-  <h5>Order #{{ order.id }}</h5>
+<div class="d-flex justify-content-between align-items-center flex-wrap">
 
-  <p><strong>Date:</strong> {{ order.created_at }}</p>
+<div>
+<h5 class="fw-bold">Order #{{ order.id }}</h5>
+<p class="text-muted mb-1">{{ order.created_at }}</p>
 
-  <p><strong>Status:</strong> {{ order.status }}</p>
+<span class="badge bg-success px-3 py-2 mb-2">
+{{ order.status }}
+</span>
 
-  <p><strong>Total Items:</strong> {{ order.total_items }}</p>
+<p>Total Items: {{ order.total_items }}</p>
+<p class="price">₹{{ order.total_price }}</p>
 
-  <p><strong>Total Price:</strong> ₹{{ order.total_price }}</p>
+<a href="{% url 'order_detail' order.id %}" class="btn btn-primary btn-sm">
+View Details
+</a>
+</div>
 
-  <a href="{% url 'order_detail' order.id %}" class="btn btn-primary">
-    View Details
-  </a>
+<div>
+{% for item in order.items.all|slice:":1" %}
+{% if item.product.image %}
+<img src="{{ item.product.image.url }}" width="140" height="140" style="object-fit:cover;border-radius:18px;">
+{% elif item.product.images.first %}
+<img src="{{ item.product.images.first.image.url }}" width="140" height="140" style="object-fit:cover;border-radius:18px;">
+{% elif item.product.image_url %}
+<img src="{{ item.product.image_url }}" width="140" height="140" style="object-fit:cover;border-radius:18px;">
+{% endif %}
+{% endfor %}
+</div>
+
+</div>
 
 </div>
 
 {% empty %}
-<p>No orders yet.</p>
+<p class="text-muted">No orders yet.</p>
 {% endfor %}
 
 {% endblock %}

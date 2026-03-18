@@ -1,11 +1,8 @@
-{% extends "base.html" %}
-{% block content %}
+<div class="pro-section glass text-center">
 
-<h3>Order Successful 🎉</h3>
+<h3 class="fw-bold">Order Successful 🎉</h3>
 
 <p>Your order ID: <strong>#{{ order.id }}</strong></p>
-
-<p>We will deliver to:</p>
 
 <p>
 {{ order.full_name }} <br>
@@ -18,4 +15,4 @@
 Continue Shopping
 </a>
 
-{% endblock %}
+</div>

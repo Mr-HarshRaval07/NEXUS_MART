@@ -1,25 +1,41 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h2>Order #{{ order.id }}</h2>
+<div class="pro-section glass">
 
-<p>Status: {{ order.status }}</p>
-<p>Total: ₹{{ order.total_price }}</p>
+<h2 class="fw-bold">Order #{{ order.id }}</h2>
+
+<p>Status:
+<span class="badge bg-warning px-3 py-2">
+{{ order.status }}
+</span>
+</p>
+
+<p>Total: <span class="price">₹{{ order.total_price }}</span></p>
 
 <hr>
 
-<h4>Items</h4>
+<h4 class="fw-bold">Items</h4>
 
 {% for item in order.items.all %}
+<div class="card glass hover-card p-3 mb-3 d-flex align-items-center gap-4">
 
-<div class="d-flex justify-content-between border-bottom py-2">
+{% if item.product.image %}
+<img src="{{ item.product.image.url }}" style="width:140px;height:140px;object-fit:cover;border-radius:18px;">
+{% elif item.product.images.first %}
+<img src="{{ item.product.images.first.image.url }}" style="width:140px;height:140px;object-fit:cover;border-radius:18px;">
+{% elif item.product.image_url %}
+<img src="{{ item.product.image_url }}" style="width:140px;height:140px;object-fit:cover;border-radius:18px;">
+{% endif %}
 
-  <span>{{ item.product.name }}</span>
-
-  <span>{{ item.quantity }} × ₹{{ item.price_at_purchase }}</span>
-
+<div>
+<strong>{{ item.product.name }}</strong><br>
+{{ item.quantity }} × ₹{{ item.price_at_purchase }}
 </div>
 
+</div>
 {% endfor %}
+
+</div>
 
 {% endblock %}

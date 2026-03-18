@@ -1,19 +1,51 @@
 {% extends "base.html" %}
 {% block content %}
 
+<style>
+
+/* ===== LEVEL 3 PRO ADMIN ANALYTICS ===== */
+
+.pro-card{
+background:var(--card);
+border-radius:18px;
+border:1px solid var(--border);
+padding:22px;
+box-shadow:0 12px 35px rgba(0,0,0,.12);
+transition:.3s;
+}
+
+.pro-card:hover{
+transform:translateY(-6px);
+}
+
+.pro-chart{
+background:var(--card);
+border-radius:18px;
+border:1px solid var(--border);
+padding:25px;
+box-shadow:0 10px 30px rgba(0,0,0,.1);
+}
+
+body.dark .pro-card,
+body.dark .pro-chart{
+background:#1e293b;
+}
+
+</style>
+
 <h3 class="mb-4">📊 Admin Analytics Dashboard</h3>
 
 <div class="row mb-4">
 
 <div class="col-md-4">
-  <div class="card p-3 shadow">
+  <div class="pro-card">
     <h5>Total Revenue</h5>
-    <h3>₹{{ total_revenue }}</h3>
+    <h3 class="price">₹{{ total_revenue }}</h3>
   </div>
 </div>
 
 <div class="col-md-4">
-  <div class="card p-3 shadow">
+  <div class="pro-card">
     <h5>Top Product</h5>
     <h6>
       {% if top_products %}
@@ -26,7 +58,7 @@
 </div>
 
 <div class="col-md-4">
-  <div class="card p-3 shadow">
+  <div class="pro-card">
     <h5>AI Insight 🤖</h5>
     <p>{{ insight }}</p>
   </div>
@@ -34,12 +66,12 @@
 
 </div>
 
-<div class="card p-4 shadow mb-4">
+<div class="pro-chart mb-4">
   <h5>📈 Sales Over Time</h5>
   <canvas id="salesChart" height="120"></canvas>
 </div>
 
-<div class="card p-4 shadow">
+<div class="pro-chart">
   <h5>📦 Orders Over Time</h5>
   <canvas id="ordersChart" height="120"></canvas>
 </div>
@@ -51,35 +83,26 @@
 const salesData = JSON.parse('{{ sales_data|escapejs }}');
 const ordersData = JSON.parse('{{ orders_data|escapejs }}');
 
-const salesLabels = salesData.map(d => d.day);
-const salesTotals = salesData.map(d => d.total);
-
-const orderLabels = ordersData.map(d => d.day);
-const orderCounts = ordersData.map(d => d.count);
-
-// 📈 SALES GRAPH
-
 new Chart(document.getElementById("salesChart"), {
   type: "line",
   data: {
-    labels: salesLabels,
+    labels: salesData.map(d => d.day),
     datasets: [{
       label: "Revenue ₹",
-      data: salesTotals,
-      tension: 0.4
+      data: salesData.map(d => d.total),
+      tension: 0.4,
+      borderWidth:3
     }]
   }
 });
 
-// 📦 ORDERS GRAPH
-
 new Chart(document.getElementById("ordersChart"), {
   type: "bar",
   data: {
-    labels: orderLabels,
+    labels: ordersData.map(d => d.day),
     datasets: [{
       label: "Orders",
-      data: orderCounts
+      data: ordersData.map(d => d.count)
     }]
   }
 });
