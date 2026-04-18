@@ -1,5 +1,7 @@
 # 🛒 NEXUS MART — Full-Stack E-Commerce Platform
 
+🌐 Live Demo: https://lnkd.in/gJRHxh5E
+
 A feature-rich e-commerce web application built with **Django** and **PostgreSQL**, featuring smart product search, AI-powered recommendations, an intelligent chatbot, secure checkout with multiple payment options, and an admin analytics dashboard.
 
 > 🎓 Group Project | Built with Django 5.2 • PostgreSQL • Bootstrap 5 • 
